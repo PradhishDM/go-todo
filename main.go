@@ -30,7 +30,9 @@ func main() {
 	defer myDb.Close()
 
 	// 3. INITIALIZING FIREBASE
-	auth.InitFirebase()
+	if err := auth.InitFirebase(myConfig.FirebaseCredBase64); err != nil {
+		log.Fatalf("Failed to initialize Firebase: %v", err)
+	}
 
 	// 4 CREATING ROUTE
 	myRouter := chi.NewRouter()
