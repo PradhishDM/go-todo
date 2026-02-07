@@ -1,6 +1,6 @@
 module project.com/todo
 
-go 1.25.4
+go 1.24
 
 require (
 	cel.dev/expr v0.23.1 // indirect
