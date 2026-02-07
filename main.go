@@ -25,7 +25,7 @@ func main() {
 	// 2. CONNECTING POSTGRES(DATABASE)
 	myDb, err := database.ConnectDB(myConfig)
 	if err != nil {
-		log.Fatalf("Failed to Connect to Database")
+		log.Fatalf("Failed to Connect to Database: %v", err)
 	}
 	defer myDb.Close()
 
@@ -64,6 +64,12 @@ func main() {
 
 	// 6. FINALLY, STARTING THE SERVER:
 	log.Println("Server running on Port:", myConfig.Port)
+	log.Println("DB_HOST:", myConfig.DBHost)
+	log.Println("DB_PORT:", myConfig.DBPort)
+	log.Println("DB_NAME:", myConfig.DBName)
+	log.Println("DB_USER:", myConfig.DBUser)
+	log.Println("DB_PASSWORD set:", myConfig.DBPassword != "")
+
 	http.ListenAndServe(":"+myConfig.Port, myRouter)
 
 }
