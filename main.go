@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/go-chi/chi/v5"
 
@@ -30,7 +31,7 @@ func main() {
 	defer myDb.Close()
 
 	// 3. INITIALIZING FIREBASE
-	if err := auth.InitFirebase(myConfig.FirebaseCredBase64); err != nil {
+	if _, err := auth.InitFirebase(); err != nil {
 		log.Fatalf("Failed to initialize Firebase: %v", err)
 	}
 
@@ -70,6 +71,11 @@ func main() {
 	log.Println("DB_USER:", myConfig.DBUser)
 	log.Println("DB_PASSWORD set:", myConfig.DBPassword != "")
 
-	http.ListenAndServe(":"+myConfig.Port, myRouter)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	log.Fatal(http.ListenAndServe(":"+port, myRouter))
 
 }

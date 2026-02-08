@@ -1,2 +1,3 @@
-protect/
+.protect/
 .env
+firebase-service-account.json
