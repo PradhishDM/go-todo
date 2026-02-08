@@ -2,8 +2,10 @@ package todo
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"project.com/todo/internal/auth"
 )
@@ -108,15 +110,23 @@ func (h *Handler) DeleteTodo(w http.ResponseWriter, r *http.Request) {
 
 // EXTRACT FIREBASE TOKEN
 func getUserIDFromHeader(r *http.Request) (string, error) {
-	token := r.Header.Get("Authorization")
-	if token == "" {
-		return "", http.ErrNoCookie
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		return "", errors.New("missing Authorization header")
 	}
 
-	parse, err := auth.VerifyIdToken(token)
+	// Expect: "Bearer <token>"
+	parts := strings.Split(authHeader, " ")
+	if len(parts) != 2 || parts[0] != "Bearer" {
+		return "", errors.New("invalid Authorization header format")
+	}
+
+	token := parts[1]
+
+	parsed, err := auth.VerifyIdToken(token)
 	if err != nil {
 		return "", err
 	}
 
-	return parse.UID, nil
+	return parsed.UID, nil
 }
