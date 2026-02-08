@@ -39,12 +39,12 @@ func main() {
 	myRouter := chi.NewRouter()
 
 	myRouter.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:3000", "http://localhost:3001"},
+		AllowedOrigins:   []string{"https://go-todo-55uh.onrender.com", "http://localhost:3000", "https://go-todo-ui-ik6x.vercel.app"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposedHeaders:   []string{"Link"},
 		AllowCredentials: true,
-		MaxAge:           300, // 5 minutes
+		MaxAge:           300,
 	}))
 
 	// 5.INITIALIZE TODO COMPONENTS
